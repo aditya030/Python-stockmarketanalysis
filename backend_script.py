@@ -8,9 +8,9 @@ from jugaad_data.nse import bhavcopy_save, bhavcopy_fo_save, stock_df
 
 class stock_market_analysis:
 
-    def get_data(stock_name):
+    def get_data(self, stock_name):
 
-        df = stock_df(symbol="COALINDIA", from_date=date(2019,1,1),
+        df = stock_df(symbol=stock_name, from_date=date(2019,1,1),
                     to_date=date(2020,1,30), series="EQ")
         
         return df
