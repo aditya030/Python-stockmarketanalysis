@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from backend_script import stock_market_analysis
+from backend_script import StockMarketAnalysis
 
 st.title("Stock Data Analysis")
 
@@ -11,8 +11,9 @@ stock_name = st.text_input("Enter Stock Name:", "RELIANCE")
 # Cache the stock data fetching process only if stock data is not already loaded
 if 'df' not in st.session_state or st.session_state.stock_name != stock_name:
     if st.button("Get Data"):
-        stock_app = stock_market_analysis()
-        st.session_state.df = stock_app.get_data(stock_name)
+        stock_app = StockMarketAnalysis()
+        st.session_state.df = stock_app.fetch_data(stock_name)
+        st.session_state.df = stock_app.clean_data(st.session_state.df)
         st.session_state.stock_name = stock_name  # Save the stock name for session
 
 if 'df' in st.session_state and not st.session_state.df.empty:
