@@ -2,11 +2,28 @@ from datetime import datetime
 from jugaad_data.nse import stock_df
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+
+from functools import wraps
+
 
 
 class StockMarketAnalysis:
     def __init__(self):
         self.stock_data = None
+        
+    def log_execution_time(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+           start_time = time.time()
+           print(f"Executing {func.__name__}...")
+           result = func(*args, **kwargs)
+           end_time = time.time()
+           print(f"{func.__name__} executed in {end_time - start_time:.2f} seconds.")
+           return result
+        return wrapper
+   
+    
 
     @staticmethod
     def get_user_input():
@@ -27,7 +44,8 @@ class StockMarketAnalysis:
         except ValueError as e:
             print(f"Invalid input: {e}")
             return None, None, None
-
+        
+    @log_execution_time
     @staticmethod
     def fetch_data(stock_name, start_date, end_date):
         try:
@@ -60,7 +78,7 @@ class StockMarketAnalysis:
         return True
 
    
-
+    @log_execution_time
     def analyze_stock(self):
         stock_name, start_date, end_date = self.get_user_input()
         if not (stock_name and start_date and end_date):
