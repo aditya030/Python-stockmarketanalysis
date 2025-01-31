@@ -79,5 +79,4 @@ urllib3==2.3.0
 ushlex==0.99.1
 webencodings==0.5.1
 websocket-client==1.8.0
-yfinance==0.2.52
 zipp==3.21.0
