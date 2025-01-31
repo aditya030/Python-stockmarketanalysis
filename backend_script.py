@@ -6,7 +6,7 @@ import time
 
 from functools import wraps
 
-
+data_file = 'data.csv'
 
 class StockMarketAnalysis:
     def __init__(self):
@@ -51,9 +51,13 @@ class StockMarketAnalysis:
         try:
             df = stock_df(symbol=stock_name, from_date=date(2019,1,1),
                     to_date=date(2020,1,30), series="EQ")
+            
             if df.empty:
                 print("No data found for this stock.")
                 return None
+            
+            data = pd.DataFrame(df)
+            data.to_csv(stock_name+'.csv', index=False)
             return df
         except Exception as e:
             print(f"Error fetching data: {e}")

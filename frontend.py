@@ -3,18 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from backend_script import StockMarketAnalysis
 
-st.title("Stock Data Analysis")
+st.title("Stock Data Analysis Capstone Project")
 
-# User input for stock name
-stock_name = st.text_input("Enter Stock Name:", "RELIANCE")
+stock_name = st.text_input("Enter Stock Name:", "SBIN")
 
-# Cache the stock data fetching process only if stock data is not already loaded
 if 'df' not in st.session_state or st.session_state.stock_name != stock_name:
     if st.button("Get Data"):
         stock_app = StockMarketAnalysis()
         st.session_state.df = stock_app.fetch_data(stock_name)
         st.session_state.df = stock_app.clean_data(st.session_state.df)
-        st.session_state.stock_name = stock_name  # Save the stock name for session
+        st.session_state.stock_name = stock_name  
 
 if 'df' in st.session_state and not st.session_state.df.empty:
     df = st.session_state.df
@@ -24,11 +22,9 @@ if 'df' in st.session_state and not st.session_state.df.empty:
     if 'DATE' in df.columns:
         df.set_index('DATE', inplace=True)
 
-    # Get min and max date for user selection
     min_date = df.index.min().date()
     max_date = df.index.max().date()
 
-    # Ask the user to select date range
     start_date, end_date = st.date_input(
         "Select date range", 
         [min_date, max_date], 
@@ -45,11 +41,27 @@ if 'df' in st.session_state and not st.session_state.df.empty:
             st.write("### Filtered Stock Data", df_filtered)
             fig, axes = plt.subplots(3, 1, figsize=(10, 12))
             
-            axes[0].bar(df_filtered.index, df_filtered['CLOSE'] - df_filtered['OPEN'], bottom=df_filtered['OPEN'], 
-                        color=['green' if c >= o else 'red' for c, o in zip(df_filtered['CLOSE'], df_filtered['OPEN'])], width=0.5)
-            axes[0].set_title("Open vs Close Prices")
+            up = df_filtered[df_filtered['CLOSE'] >= df_filtered['OPEN']]
+            down = df_filtered[df_filtered['CLOSE'] < df_filtered['OPEN']]
+
+            col_up = 'green'
+            col_down = 'red'
+            width = 0.5
+            width2 = 0.1
+            # Plotting up prices (when CLOSE >= OPEN)
+            axes[0].bar(up.index, up['CLOSE'] - up['OPEN'], width, bottom=up['OPEN'], color=col_up)
+            axes[0].bar(up.index, up['HIGH'] - up['CLOSE'], width2, bottom=up['CLOSE'], color=col_up)
+            axes[0].bar(up.index, up['LOW'] - up['OPEN'], width2, bottom=up['OPEN'], color=col_up)
+
+            # Plotting down prices (when CLOSE < OPEN)
+            axes[0].bar(down.index, down['CLOSE'] - down['OPEN'], width, bottom=down['OPEN'], color=col_down)
+            axes[0].bar(down.index, down['HIGH'] - down['OPEN'], width2, bottom=down['OPEN'], color=col_down)
+            axes[0].bar(down.index, down['LOW'] - down['CLOSE'], width2, bottom=down['CLOSE'], color=col_down)
+
+            # Formatting
+            axes[0].set_title("Candlestick Chart - Open vs Close Prices")
             axes[0].set_ylabel("Price")
-            
+            axes[0].tick_params(axis='x', rotation=30)
             axes[1].plot(df_filtered.index, df_filtered['HIGH'], color='blue', label='High', linewidth=1)
             axes[1].plot(df_filtered.index, df_filtered['LOW'], color='orange', label='Low', linewidth=1)
             axes[1].set_title("High and Low Prices")
@@ -63,4 +75,4 @@ if 'df' in st.session_state and not st.session_state.df.empty:
             plt.tight_layout()
             st.pyplot(fig)
 else:
-    st.error("No data available. Please enter a valid stock name and click 'Get Data'.")
+    st.error("no data available")
