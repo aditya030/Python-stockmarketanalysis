@@ -108,3 +108,5 @@ class StockMarketAnalysis:
 if __name__ == "__main__":
     app = StockMarketAnalysis()
     app.analyze_stock()
+
+# data aggregation eda
