@@ -1,3 +1,5 @@
 # Stock Analysis Application
 
 This project is the capstone for a 5-day Python Training Program. The Stock Analysis Application allows users to analyze stock market data interactively. It fetches, cleans, and visualizes stock data for a given stock symbol using the `Streamlit` framework. Users can select a custom date range, and the app will display interactive charts, including candlesticks, high/low prices, and trading volume. Additionally, the application calculates the daily percentage change, volatility, and average closing price. The app is designed to help users gain insights into stock price movements and make data-driven decisions.
+
+website link - https://stock-analysis-capstone.streamlit.app
