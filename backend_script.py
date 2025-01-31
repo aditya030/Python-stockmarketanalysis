@@ -109,13 +109,13 @@ class StockMarketAnalysis:
 
         print(f"\nVolatility for {stock_name}: {volatility:.2f}%")
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(self.stock_data['DATE'], self.stock_data['CLOSE'], label=f'{stock_name} Closing Prices')
-        plt.title(f'{stock_name} Closing Prices')
-        plt.xlabel('Date')
-        plt.ylabel('Close Price')
-        plt.legend()
-        plt.show()
+        # plt.figure(figsize=(10, 5))
+        # plt.plot(self.stock_data['DATE'], self.stock_data['CLOSE'], label=f'{stock_name} Closing Prices')
+        # plt.title(f'{stock_name} Closing Prices')
+        # plt.xlabel('Date')
+        # plt.ylabel('Close Price')
+        # plt.legend()
+        # plt.show()
 
 
 if __name__ == "__main__":
