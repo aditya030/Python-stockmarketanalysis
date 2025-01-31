@@ -43,7 +43,7 @@ class StockMarketAnalysis:
     @log_execution_time
     def fetch_data(self, stock_name, start_date = date(2014,1,1), end_date = date(2024, 1, 1)):
         try:
-            df = stock_df(symbol=stock_name, from_date=start_date, to_date=end_date, series="EQ")
+            df = stock_df(symbol=stock_name, from_date=start_date, to_date=end_date)
             if df.empty:
                 print("No data found for this stock.")
                 return None
