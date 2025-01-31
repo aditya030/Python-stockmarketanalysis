@@ -41,7 +41,7 @@ class StockMarketAnalysis:
             return None, None, None
 
     @log_execution_time
-    def fetch_data(self, stock_name, start_date = date(2019,1,1), end_date = date(2020, 1, 1)):
+    def fetch_data(self, stock_name, start_date = date(2014,1,1), end_date = date(2024, 1, 1)):
         try:
             df = stock_df(symbol=stock_name, from_date=start_date, to_date=end_date, series="EQ")
             if df.empty:
@@ -63,7 +63,10 @@ class StockMarketAnalysis:
 
         if not pd.api.types.is_datetime64_any_dtype(df["DATE"]):
             df["DATE"] = pd.to_datetime(df["DATE"])
-
+        
+        # dropping two columns
+        df = pd.DataFrame(df)
+        df = df.drop(columns=['VWAP', 'VALUE'])
         return df
 
     @staticmethod
@@ -74,17 +77,17 @@ class StockMarketAnalysis:
 
     @staticmethod  
     def calulate_daily_percentage_change(df):
-        df['Daily_change_%'] = df['CLOSE'].pct_change() * 100
+        df['Daily_%_change'] = df['CLOSE'].pct_change() * 100
         return df
 
     @staticmethod  
     def calculate_volatility(df):
-        volatility = df['Daily_Change_%'].std()
+        volatility = df['Daily_%_change'].std()
         return volatility
 
     @staticmethod   
     def group_and_average(df):
-        return df.groupby('SYMBOL', as_index = False)['CLOSE'].mean().rename(columns={'CLOSE': 'Avg_Close'})
+        return df['CLOSE'].mean()
 
     @log_execution_time
     def analyze_stock(self):
